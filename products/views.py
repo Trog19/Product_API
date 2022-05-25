@@ -25,7 +25,7 @@ def product_list(request):
         return Response(serializers.data, status=status.HTTP_201_CREATED)
 
 
-@api_view(['GET', 'PUT'])
+@api_view(['GET', 'PUT', 'DELETE'])
 def product_detail(request, pk):
     product = get_object_or_404(Products, pk=pk)
     if request.method == 'GET':
@@ -36,3 +36,6 @@ def product_detail(request, pk):
         serializers.is_valid(raise_exception=True)
         serializers.save()
         return Response(serializers.data)
+    elif request.method == 'DELETE':
+        product.delete()
+        return Response(status=status.HTTP_404_NOT_FOUND)
